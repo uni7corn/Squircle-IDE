@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Squircle IDE contributors.
+ * Copyright 2023 Squircle CE contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,66 +17,34 @@
 package com.blacksquircle.ui.application.viewmodel
 
 import android.content.Intent
-import android.net.Uri
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.blacksquircle.ui.R
-import com.blacksquircle.ui.core.lifecycle.SingleLiveEvent
-import com.blacksquircle.ui.data.converter.DocumentConverter
-import com.blacksquircle.ui.data.storage.keyvalue.SettingsManager
-import com.blacksquircle.ui.domain.repository.documents.DocumentRepository
-import com.blacksquircle.ui.filesystem.base.model.FileModel
+import com.blacksquircle.ui.core.mvi.ViewEvent
+import com.blacksquircle.ui.core.storage.keyvalue.SettingsManager
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val settingsManager: SettingsManager,
-    private val documentRepository: DocumentRepository
 ) : ViewModel() {
 
-    companion object {
-        private const val TAG = "MainViewModel"
-    }
-
-    val toastEvent = SingleLiveEvent<Int>()
+    private val _viewEvent = Channel<ViewEvent>(Channel.BUFFERED)
+    val viewEvent: Flow<ViewEvent> = _viewEvent.receiveAsFlow()
 
     val fullScreenMode: Boolean
         get() = settingsManager.fullScreenMode
     val confirmExit: Boolean
         get() = settingsManager.confirmExit
 
-    fun handleIntent(intent: Intent, onSuccess: () -> Unit) {
+    fun handleIntent(intent: Intent?) {
         viewModelScope.launch {
-            try {
-                var path = intent.data?.path.toString()
-                Log.d(TAG, "Handle external file path = $path")
-                if (path.contains('%')) { // probably encoded
-                    path = Uri.decode(path)
-                    Log.d(TAG, "Decoded path = $path")
-                }
-
-                if (path.startsWith("/external_files/")) {
-                    path = path.replaceFirst(
-                        oldValue = "/external_files/",
-                        newValue = "/storage/emulated/0/"
-                    )
-                }
-
-                val index = path.indexOf("/storage/emulated/0/")
-                if (index > -1) {
-                    val fileModel = FileModel(path.substring(index, path.length))
-                    val documentModel = DocumentConverter.toModel(fileModel)
-                    documentRepository.updateDocument(documentModel)
-                    onSuccess()
-                } else {
-                    toastEvent.value = R.string.message_file_not_found
-                }
-            } catch (e: Exception) {
-                Log.e(TAG, e.message, e)
-                toastEvent.value = R.string.message_unknown_exception
+            if (intent != null) {
+                _viewEvent.send(ViewEvent.NewIntent(intent))
             }
         }
     }

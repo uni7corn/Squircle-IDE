@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Squircle IDE contributors.
+ * Copyright 2023 Squircle CE contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,45 +16,15 @@
 
 package com.blacksquircle.ui.filesystem.local.utils
 
-import com.blacksquircle.ui.filesystem.base.model.FileType
 import java.io.File
 
 internal fun File.size(): Long {
     if (isDirectory) {
         var length = 0L
-        for (child in listFiles()!!) {
+        for (child in listFiles().orEmpty()) {
             length += child.size()
         }
         return length
     }
     return length()
-}
-
-internal fun File.lineCount(fileType: FileType): Int? {
-    if (isFile && fileType == FileType.TEXT) {
-        var lines = 0
-        forEachLine {
-            lines++
-        }
-        return lines
-    }
-    return null
-}
-
-internal fun File.wordCount(fileType: FileType): Int? {
-    if (isFile && fileType == FileType.TEXT) {
-        var words = 0
-        forEachLine {
-            words += it.split(' ').size
-        }
-        return words
-    }
-    return null
-}
-
-internal fun File.charCount(fileType: FileType): Int? {
-    if (isFile && fileType == FileType.TEXT) {
-        return length().toInt()
-    }
-    return null
 }

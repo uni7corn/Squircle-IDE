@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Squircle IDE contributors.
+ * Copyright 2023 Squircle CE contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,4 +16,4 @@
 
 package com.blacksquircle.ui.filesystem.base.exception
 
-class UnsupportedArchiveException(path: String) : RuntimeException("$path (Cannot open unsupported archive)")
+class UnsupportedArchiveException(path: String) : FilesystemException("Cannot open unsupported archive ($path)")

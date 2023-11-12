@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Squircle IDE contributors.
+ * Copyright 2023 Squircle CE contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 package com.blacksquircle.ui.internal.di
 
 import android.content.Context
-import com.blacksquircle.ui.utils.inappupdate.InAppUpdate
-import com.blacksquircle.ui.utils.inappupdate.InAppUpdateImpl
+import com.blacksquircle.ui.utils.InAppUpdate
+import com.blacksquircle.ui.utils.InAppUpdateImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

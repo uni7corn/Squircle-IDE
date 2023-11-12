@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Squircle IDE contributors.
+ * Copyright 2023 Squircle CE contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,5 +22,5 @@ import java.nio.charset.StandardCharsets
 data class FileParams(
     val chardet: Boolean = false,
     val charset: Charset = StandardCharsets.UTF_8,
-    val linebreak: LineBreak = LineBreak.LF
+    val linebreak: LineBreak = LineBreak.LF,
 )

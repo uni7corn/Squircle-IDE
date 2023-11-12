@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Squircle IDE contributors.
+ * Copyright 2023 Squircle CE contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,4 +16,4 @@
 
 package com.blacksquircle.ui.filesystem.base.exception
 
-class FileAlreadyExistsException(path: String) : RuntimeException("Cannot create file $path because it already exists")
+class FileAlreadyExistsException(path: String) : FilesystemException("Cannot create file $path because it's already exists")

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright 2021 Squircle IDE contributors.
+  ~ Copyright 2023 Squircle CE contributors.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,15 +15,11 @@
   ~ limitations under the License.
   -->
 <resources>
-
     <string name="action_restart">重启</string>
     <string name="action_yes">退出</string>
     <string name="action_no">取消</string>
-
     <string name="dialog_title_exit">退出应用</string>
     <string name="dialog_message_exit">确定要退出本应用吗？所有更改将会保存到缓存中</string>
-
     <string name="message_in_app_update_ready">应用已准备好新版本</string>
     <string name="message_in_app_update_failed">新版本安装失败</string>
-
 </resources>

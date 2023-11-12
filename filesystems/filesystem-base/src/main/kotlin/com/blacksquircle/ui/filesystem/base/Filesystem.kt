@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Squircle IDE contributors.
+ * Copyright 2023 Squircle CE contributors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,26 +19,27 @@ package com.blacksquircle.ui.filesystem.base
 import com.blacksquircle.ui.filesystem.base.model.FileModel
 import com.blacksquircle.ui.filesystem.base.model.FileParams
 import com.blacksquircle.ui.filesystem.base.model.FileTree
-import com.blacksquircle.ui.filesystem.base.model.PropertiesModel
 import kotlinx.coroutines.flow.Flow
 
 interface Filesystem {
 
-    suspend fun defaultLocation(): FileModel
+    fun defaultLocation(): FileModel
+    fun provideDirectory(parent: FileModel): FileTree
+    fun exists(fileModel: FileModel): Boolean
 
-    suspend fun provideFile(path: String): FileModel
-    suspend fun provideDirectory(parent: FileModel): FileTree
+    fun createFile(fileModel: FileModel)
+    fun renameFile(source: FileModel, dest: FileModel)
+    fun deleteFile(fileModel: FileModel)
+    fun copyFile(source: FileModel, dest: FileModel)
 
-    suspend fun createFile(fileModel: FileModel): FileModel
-    suspend fun renameFile(fileModel: FileModel, fileName: String): FileModel
-    suspend fun deleteFile(fileModel: FileModel): FileModel
-    suspend fun copyFile(source: FileModel, dest: FileModel): FileModel
-    suspend fun propertiesOf(fileModel: FileModel): PropertiesModel
-    suspend fun isExists(fileModel: FileModel): Boolean
+    fun compressFiles(source: List<FileModel>, dest: FileModel): Flow<FileModel>
+    fun extractFiles(source: FileModel, dest: FileModel): Flow<FileModel>
 
-    suspend fun compress(source: List<FileModel>, dest: FileModel): Flow<FileModel>
-    suspend fun extractAll(source: FileModel, dest: FileModel): Flow<FileModel>
+    fun loadFile(fileModel: FileModel, fileParams: FileParams): String
+    fun saveFile(fileModel: FileModel, text: String, fileParams: FileParams)
 
-    suspend fun loadFile(fileModel: FileModel, fileParams: FileParams): String
-    suspend fun saveFile(fileModel: FileModel, text: String, fileParams: FileParams)
+    interface Mapper<T> {
+        fun toFileModel(fileObject: T): FileModel
+        fun toFileObject(fileModel: FileModel): T
+    }
 }
